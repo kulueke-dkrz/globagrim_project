@@ -115,19 +115,22 @@ def div_zonal_impulse(NK, NJ, du, u, uw, dx, v, cs, dy):
                 )
                 / 4.0
                 / dx[k]
+                + (
+                    (
+                        v[j, k + 1, :] * cs[k + 1]
+                        + v[j, k, :] * cs[k]
+                    )
+                    * (uw[j, k + 1, :] + uw[j, k, :])
+                    - (
+                        v[j, k, :] * cs[k]
+                        + v[j, k - 1, :] * cs[k - 1]
+                    )
+                    * (uw[j, k, :] + uw[j, k - 1, :])
+                )
+                / 4.0
+                / dy
+                / cs[k]
             )
-            +(
-                (
-                    v[j, k + 1, :] * cs[k + 1]
-                    + v[j, k, :] * cs[k]
-                )
-                * (uw[j, k + 1, :] + uw[j, k, :])
-                - (
-                    v[j, k, :] * cs[k]
-                    + v[j, k - 1, :] * cs[k - 1]
-                )
-                * (uw[j, k, :] + uw[j, k - 1, :])
-            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
 def div_meridional_impulse(NK, NJ, dv, u, vw, dx, v, cs, dy):
@@ -145,19 +148,22 @@ def div_meridional_impulse(NK, NJ, dv, u, vw, dx, v, cs, dy):
                 )
                 / 4.0
                 / dx[k]
+                + (
+                    (
+                        v[j, k + 1, :] * cs[k + 1]
+                        + v[j, k, :] * cs[k]
+                    )
+                    * (vw[j, k + 1, :] + vw[j, k, :])
+                    - (
+                        v[j, k, :] * cs[k]
+                        + v[j, k - 1, :] * cs[k - 1]
+                    )
+                    * (vw[j, k, :] + vw[j, k - 1, :])
+                )
+                / 4.0
+                / dy
+                / cs[k]
             )
-            +(
-                (
-                    v[j, k + 1, :] * cs[k + 1]
-                    + v[j, k, :] * cs[k]
-                )
-                * (vw[j, k + 1, :] + vw[j, k, :])
-                - (
-                    v[j, k, :] * cs[k]
-                    + v[j, k - 1, :] * cs[k - 1]
-                )
-                * (vw[j, k, :] + vw[j, k - 1, :])
-            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
 def div_temperature_flow(NK, NJ, dvt, u, tw, dx, v, cs, dy):
@@ -175,19 +181,22 @@ def div_temperature_flow(NK, NJ, dvt, u, tw, dx, v, cs, dy):
                 )
                 / 4.0
                 / dx[k]
+                + (
+                    (
+                        v[j, k + 1, :] * cs[k + 1]
+                        + v[j, k, :] * cs[k]
+                    )
+                    * (tw[j, k + 1, :] + tw[j, k, :])
+                    - (
+                        v[j, k, :] * cs[k]
+                        + v[j, k - 1, :] * cs[k - 1]
+                    )
+                    * (tw[j, k, :] + tw[j, k - 1, :])
+                )
+                / 4.0
+                / dy
+                / cs[k]
             )
-            +(
-                (
-                    v[j, k + 1, :] * cs[k + 1]
-                    + v[j, k, :] * cs[k]
-                )
-                * (tw[j, k + 1, :] + tw[j, k, :])
-                - (
-                    v[j, k, :] * cs[k]
-                    + v[j, k - 1, :] * cs[k - 1]
-                )
-                * (tw[j, k, :] + tw[j, k - 1, :])
-            ) / 4.0 / dy / cs[k]
 
 @njit(parallel=True, fastmath=True)
 def div_weighted_wind(NK, NJ, d, u, dx, v, cs, dy):
@@ -220,13 +229,15 @@ def sigma_flow(dm, d, dsig, NL):
             dm[:, :, l - 1] + d[:, :, l] * dsig
         )
 
-# maybe index error
 @njit(parallel=True, fastmath=True)
 def vert_speed_sigma(NL, dsdt, NJ, NK, sigma, psg, dm):
     #
     # calculation of vertial velocity in SIGMA system
     #
-    for l in range(0, NL - 2):
+    # loop runs through l = NL - 1 (the surface, sigma == 1.0): the formula
+    # evaluates to exactly zero there by construction, which is the correct
+    # boundary condition, so no separate case is needed for that level
+    for l in range(0, NL - 1):
         dsdt[1 : NJ + 1, 1 : NK + 1, l] = (
             sigma[l]
             / psg[1 : NJ + 1, 1 : NK + 1]
