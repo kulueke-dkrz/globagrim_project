@@ -1,9 +1,13 @@
 import numpy as np
 from .variables import global_array, global_const
 
-nt = int(global_const.TF * 3600 / global_const.DT + 0.5)  # number of time steps
-dtout = global_const.DT * global_const.NOUT / 60  # output interval in min
-ntout = nt / global_const.NOUT + 1  # output time steps
+
+def num_time_steps():
+    # derived from global_const.TF/DT, so it must be recomputed on every
+    # run rather than cached at import time (TF/DT can change between
+    # model.run() calls in the same session)
+    return int(global_const.TF * 3600 / global_const.DT + 0.5)
+
 
 #
 # define cases

@@ -9,9 +9,17 @@ def globagrim():
     #
     #     global atmospheric grid point model [GlobAGiM]
     #
+    # reset shared model state so a new model.run() in the same session
+    # starts from a clean slate instead of reusing arrays/counters sized
+    # or populated by a previous run
+    global_array.reset()
+    global_int.reset()
+
+    nt = init.num_time_steps()
+
     print("Number of longitudes: ", global_const.NJ)
     print("Number of latitudes: ", global_const.NK)
-    print("Number of model time steps: ", init.nt)
+    print("Number of model time steps: ", nt)
     if global_const.output_int == 0:
         nout = 1
     else:
@@ -90,7 +98,7 @@ def globagrim():
     #
     #     time loop
     #
-    for n in range(1, init.nt):
+    for n in range(1, nt):
         #
         #       calculate trend
         #

@@ -1,6 +1,5 @@
 from .constants import global_const
-from . import globagrim
-#from . import visualization
+from . import driver
 
 
 def run(**kwargs):
@@ -18,10 +17,11 @@ def run(**kwargs):
 
     global_const.output_path = kwargs.get("OUT", global_const.output_path)
 
-    globagrim.globagrim()
+    driver.globagrim()
 
 
 def plot(**kwargs):
+    from . import visualization
 
     var_name = kwargs.get("var_name", "PSG")
     time_step = kwargs.get("out_step", 0)
