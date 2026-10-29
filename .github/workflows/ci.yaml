@@ -5,27 +5,18 @@ on: [push, pull_request]
 jobs:
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: bash -l {0}
     steps:
       - uses: actions/checkout@v7
-      - uses: conda-incubator/setup-miniconda@v4
+      - uses: astral-sh/setup-uv@v10.3.3
         with:
-          activate-environment: globagrim_env
-          environment-file: environment.yml
-          auto-activate-base: false
-      - run: |
-          conda info
-          conda list
+          enable-cache: true
       - name: Install package
-        run: |
-          python3 -m pip install .
+        run: uv sync --extra dev
       - name: Test with pytest
-        run: pytest .
+        run: uv run pytest .
       - name: Build docs
         run: |
-          cd docs && make html
+          cd docs && uv run make html
       - name: Archive build artifacts (i.e. documentation)
         uses: actions/upload-artifact@v7
         with:

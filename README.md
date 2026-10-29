@@ -8,19 +8,24 @@
 This model is inspired by GLOBAGIM of CLISAP (more information can be found via: https://www.clisap.de/research/b:-climate-manifestations-and-impacts/crg-dynamical-systems/models/globagim/)
 
 ## Installation
-Create a conda environment with
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then from the repository root run:
 ```
+uv sync
+```
+This creates a `.venv` with GLOBAGRIM and all dependencies installed, pinned exactly per `uv.lock`.
+Then, run commands inside the environment with `uv run`, e.g.:
+```
+uv run python
+```
+or activate it directly with:
+```
+source .venv/bin/activate
+```
+To also install the development/docs extras (`jupyter`, `pytest`, `sphinx`), run `uv sync --extra dev` instead.
 
-conda env create -f environment.yml
-```
-This installs GLOBAGRIM and all dependencies.
-Then, activate the environment with:
-```
-conda activate globagrim_env
-```
 ---
 ### Alternative
-If you already have `numpy`, `xarray`, `netcdf4`, `matplotlib`, `cartopy`, `jupyter`, `pip` installed, you could add the GLOBAGRIM package to your current environment by executing:
+If you already have `numpy`, `xarray`, `netcdf4`, `matplotlib`, `cartopy`, `numba`, `pip` installed, you could add the GLOBAGRIM package to your current environment by executing:
 ```
 pip install git+https://github.com/MarcoKulueke/globagrim_project.git#egg=globagrim
 ```

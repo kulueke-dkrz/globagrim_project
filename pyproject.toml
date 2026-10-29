@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "globagrim"
+version = "0.1"
+description = "Global Atmospheric Grid Point Model"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Marco Kulüke", email = "marco.kulueke@gmail.com" }]
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "numpy>=2.2,<3",
+    "xarray>=2025.9",
+    "netCDF4>=1.7.2",
+    "matplotlib>=3.10",
+    "shapely>=2.1",
+    "cartopy>=0.25",
+    # pinned: numba's own wheel support on macOS x86_64 ends after this
+    # version (later releases only ship arm64/Linux/Windows wheels), so a
+    # newer pin would force a from-source build with an LLVM toolchain on
+    # Intel Macs
+    "numba==0.62.1",
+]
+
+[project.urls]
+Homepage = "https://github.com/MarcoKulueke/globagrim_project"
+
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "pytest",
+    "sphinx",
+]
+
+[tool.setuptools.packages.find]
+exclude = ["tests*"]
