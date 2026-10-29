@@ -1,6 +1,9 @@
 *.nc
 __pycache__
-.ipynb_checkpoints 
+.ipynb_checkpoints
 gif/*png
 *pptx
 .DS_Store
+build/
+dist/
+*.egg-info/

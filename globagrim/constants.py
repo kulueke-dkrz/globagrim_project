@@ -8,9 +8,7 @@ class GLOBAL_CONST:
     NK = 72  # north-south / number of circles of latitude
     NL = 20  # number of SIGMA-surfaces
     DT = 15.0  # time step in SECONDS
-    #    TF = 240.0  # total integration time in HOURS
-    TF = 0.025  # total integration time in HOURS
-    NOUT = 60  # output every NOUT time steps
+    TF = 0.25  # total integration time in HOURS (a full physical run is ~240.0 hours)
     PS0 = 100000.0  # reference pressure experiment 1
     RE = 6.371e6  # earth radius
     RHOS = 1.3  # mean air density at surface
