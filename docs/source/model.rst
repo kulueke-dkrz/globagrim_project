@@ -1,9 +1,5 @@
 Functions
 =========
 
-.. automodule:: globagrim
-
-.. autosummary::
-   :toctree: _autosummary
-
-   plot
+.. automodule:: globagrim.model
+   :members: run, plot
